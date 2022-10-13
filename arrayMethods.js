@@ -1,3 +1,12 @@
+const arrayValidation = (array) => {
+  if (Array.isArray(array) || array.length < 1) {
+    return array;
+  }
+  return console.error(
+    new TypeError("Array must be Array type and not be empty")
+  );
+};
+
 const forEachFn = (array, callback) => {
   for (let i = 0; i < array.length; i++) {
     array[i] = callback(array[i]);
@@ -14,15 +23,11 @@ const mapFn = (array, callback) => {
 };
 
 const entriesFn = (array) => {
-  let newArray1 = [];
-  let newArray2 = [];
-  let keys = Object.keys(array);
-  let values = Object.values(array);
+  let newArray = [];
   for (let i = 0; i < array.length; i++) {
-    newArray1 = [keys[i], values[i]];
-    newArray2.push(newArray1);
+    newArray.push([i, array[i]]);
   }
-  return newArray2;
+  return newArray;
 };
 
 const filterFn = (array, callback) => {
@@ -36,7 +41,12 @@ const filterFn = (array, callback) => {
 };
 
 const reduceFn = (array, callback, initial) => {
-  let currentValue = initial;
+  let currentValue;
+  initial === undefined ? (currentValue = array[0]) : (currentValue = initial);
+  if (!Array.isArray(array) || array.length < 1) {
+    return console.error(TypeError("Wrong array"));
+  }
+
   for (let i = 0; i < array.length; i++) {
     currentValue += callback(array[i]);
   }
@@ -53,16 +63,12 @@ const everyFn = (array, callback) => {
 };
 
 const someFn = (array, callback) => {
-  let check = false;
   for (let i = 0; i < array.length; i++) {
     if (callback(array[i])) {
-      return (check = true);
+      return true;
     }
+    return false;
   }
-  if (check) {
-    return true;
-  }
-  return false;
 };
 
 // SPRAWDZENIE
@@ -72,10 +78,7 @@ const array3 = [
   { a: 1, b: 2 },
   { c: 3, d: 4 },
 ];
+const array4 = [];
 const callFn = (element) => element * 2;
-const callFilterFn = (element) => element > 2;
-
-// console.log(forEachFn(array1, callback));
-// console.log(mapFn(array1, callback));
-// console.log(Object.entries(array2));
-// console.log(entriesFn(array2));
+const callFilterFn = (element) => element < 2;
+const callFilterFn2 = (element) => element < 3;
